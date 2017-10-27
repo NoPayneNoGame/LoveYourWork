@@ -97,6 +97,7 @@ devMiddleware.waitUntilValid(() => {
 
       //testing area
       //messagingTwilio(err, '***REMOVED***')
+      console.log(new Date().toLocaleDateString('en-AU'))
   })
 })
 
