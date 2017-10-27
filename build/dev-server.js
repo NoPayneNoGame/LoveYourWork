@@ -6,6 +6,8 @@ if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
 }
 
+const local = require('../config/local.js')
+
 const opn = require('opn')
 const path = require('path')
 const express = require('express')
@@ -66,7 +68,22 @@ app.use(devMiddleware)
 const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
-const uri = 'http://localhost:' + port
+
+
+
+const uri = `http://${local.host}:${port}`
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.json())
+
+const endpoints = express.Router()
+app.use('/endpoints', endpoints);
+
+require('../lib/endpoints')(app)
+
+
+
+
 
 var _resolve
 var _reject
@@ -86,7 +103,7 @@ devMiddleware.waitUntilValid(() => {
       _reject(err)
     }
     process.env.PORT = port
-    var uri = 'http://localhost:' + port
+    var uri = `http://${local.host}:${port}`
     console.log('> Listening at ' + uri + '\n')
     // when env is testing, don't need open it
     if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {

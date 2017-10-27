@@ -2,6 +2,14 @@
 
 > Increase team morale
 
+
+src/requests is for *outgoing* HTTP requests
+
+lib/endpoints is for setting up api endpoints
+
+
+
+
 ## Build Setup
 
 ``` bash
