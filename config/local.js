@@ -1,4 +1,6 @@
 'use strict'
 module.exports = {
-  host: null || 'localhost'
+  host: '' || 'localhost',
+  tanda_id: '',
+  tanda_secret: '',
 }
