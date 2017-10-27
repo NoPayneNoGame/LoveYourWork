@@ -94,8 +94,27 @@ devMiddleware.waitUntilValid(() => {
     }
     server = app.listen(port)
     _resolve()
+
+      //testing area
+      //messagingTwilio(err, '***REMOVED***')
   })
 })
+
+
+var accountSid = 'ACe1337682df29859b94674d089ce32839'; // Your Account SID from www.twilio.com/console
+var authToken = 'f9f5585d1086f36b73a9aae12e0fd17e';   // Your Auth Token from www.twilio.com/console
+
+var twilio = require('twilio');
+var client = new twilio(accountSid, authToken);
+
+function messagingTwilio(err, recipient){
+  client.messages.create({
+      body: 'Hello from Node',
+      to: recipient,  // Text this number
+      from: '+61429723943' // From a valid Twilio number
+  })
+  .then((message) => console.log(message.sid));
+}
 
 module.exports = {
   ready: readyPromise,
