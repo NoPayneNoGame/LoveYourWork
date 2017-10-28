@@ -1,6 +1,5 @@
 'use strict'
 require('./check-versions')()
-
 const config = require('../config')
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
@@ -14,6 +13,8 @@ const express = require('express')
 const webpack = require('webpack')
 const proxyMiddleware = require('http-proxy-middleware')
 const webpackConfig = require('./webpack.dev.conf')
+
+var Tanda = require ('tanda')
 
 // default port where dev server listens for incoming traffic
 const port = process.env.PORT || config.dev.port
@@ -138,12 +139,51 @@ var client = new twilio(accountSid, authToken);
 
 function messagingTwilio(err, recipient){
   client.messages.create({
-      body: 'Hello from Node',
+      body: 'Happy Birthday',
       to: recipient,  // Text this number
       from: '+61429723943' // From a valid Twilio number
   })
   .then((message) => console.log(message.sid));
 }
+
+var userID;
+var userBirthday;
+var userNumber;
+
+function initialVariable(err){
+  if (err){
+    null;
+  }
+  userID = null;
+}
+
+function user(){
+  if (birthdayChecking(userBirthday, callback) == true){
+    console.log('Happy Birthday, ' + userName);
+    //messagigTwilio(err, '+61422544952')
+  }
+  else{
+
+  }
+}
+
+
+function birthdayChecking(userBirthday, callback){
+  var userBirthdayFormat = new Date(userBirthday);
+  var present = new Date();
+
+  userBirthdayFormat.getDate();
+  if (userBirthdayFormat.getDate() + '/' (userBirthdayFormat.getMonth() + 1 == present.getDate() + '/' (present.getMonth() + 1))){
+    callback(true);
+  }
+  else {
+    callback(false);
+  }
+}
+
+const tanda = new Tanda({ authToken: '118a3d1f7657d307d71e5f0e9eed552e9f49304b674027e61c79b2a5b77b1f0a'});
+
+tanda.user.get(1).then(user => console.log(user));
 
 module.exports = {
   ready: readyPromise,
