@@ -16,6 +16,7 @@
     "nexmo": "^2.0.2",
     "nodemon": "^1.12.1",
     "querystring": "^0.2.0",
+    "tanda": "^1.0.0",
     "twilio": "^3.9.0",
     "vue": "^2.5.2",
     "vue-resource": "^1.3.4",
