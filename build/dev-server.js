@@ -14,7 +14,6 @@ const webpack = require('webpack')
 const proxyMiddleware = require('http-proxy-middleware')
 const webpackConfig = require('./webpack.dev.conf')
 
-var Tanda = require ('tanda')
 
 // default port where dev server listens for incoming traffic
 const port = process.env.PORT || config.dev.port
@@ -187,9 +186,6 @@ function birthdayChecking(userBirthday, callback){
   }
 }
 
-const tanda = new Tanda({ authToken: '118a3d1f7657d307d71e5f0e9eed552e9f49304b674027e61c79b2a5b77b1f0a'});
-
-tanda.user.get(1).then(user => console.log(user));
 
 module.exports = {
   ready: readyPromise,
