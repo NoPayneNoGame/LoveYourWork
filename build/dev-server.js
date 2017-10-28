@@ -111,7 +111,6 @@ devMiddleware.waitUntilValid(() => {
 
       //testing area
       //messagingTwilio(err, '***REMOVED***')
-      console.log(new Date().toLocaleDateString('en-AU'))
 
       var Requests = require('../lib/requests/index.js')
       
@@ -128,10 +127,17 @@ devMiddleware.waitUntilValid(() => {
       var data = {
         "name": "John Test"
       }
-      requests.post(options, data, function (result) {
+      /*requests.post(options, data, function (result) {
         console.log(result);
+      })*/
+
+      requests.get(options, function (result){
+        for (var i = 0; i < result.data.length; i ++){
+          birthdayChecking(result.data[i].date_of_birth, function (result){
+            console.log(result)
+          });
+        }
       })
-      
   })
 })
 
@@ -172,17 +178,28 @@ function user(){
   }
 }
 
+var present = new Date();
+
 
 function birthdayChecking(userBirthday, callback){
   var userBirthdayFormat = new Date(userBirthday);
-  var present = new Date();
 
   userBirthdayFormat.getDate();
-  if (userBirthdayFormat.getDate() + '/' (userBirthdayFormat.getMonth() + 1 == present.getDate() + '/' (present.getMonth() + 1))){
-    callback(true);
+
+  if ((userBirthdayFormat.getDate() + '/' + (userBirthdayFormat.getMonth() + 1) == (present.getDate() + '/' + (present.getMonth() + 1)))){
+    callback();
+    console.log(userBirthdayFormat.getDate() + '/' + (userBirthdayFormat.getMonth() + 1));
+    console.log(present.getDate() + '/' + (present.getMonth() + 1));
   }
-  else {
-    callback(false);
+}
+
+function workAnniversary (userWorkDate, callback){
+  var userWorkDateFormat = new Date(userWorkDate);
+
+  userWorkDateFormat.getDate();
+
+  if ((userWorkDateFormat.getDate() + '/' + (userWorkDateFormat.getMonth() + 1) == (present.getDate() + '/' + (present.getMonth() + 1)))){
+    //callback();
   }
 }
 
