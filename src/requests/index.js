@@ -66,4 +66,15 @@ export default {
     });
   },
 
+  getStaffInfo(userId, callback){
+    context.$http.get('https://my.tanda.co/api/v2/users?show_wages=true', header()).then((res) => {
+      callback(res.body);
+    }).catch((res) => {
+      callback({
+        'action': 'fail',
+        'msg': res.body.msg
+      });
+    });
+  },
+
 }
