@@ -4,7 +4,7 @@ import local from '../../config/local.js'
 function header() {
   return {
     header: {
-      'Content-Type': 'application/json'   
+      'Authorization': 'bearer ' + local.code,   
     }
   }
 }
@@ -12,8 +12,10 @@ function header() {
 export default {
 
   oauthTanda(context, callback) {
-    var header = header().header['Cache-Control'] = 'no-cache';
-    var body = {
+    var h = header();
+    h.header['Cache-Control'] = 'no-cache';
+    console.log(h)
+    var data = {
       'client_id': local.tanda_id,
       'client_secret': local.tanda_secret,
       'code': local.tanda_code,
@@ -21,12 +23,13 @@ export default {
       'grant_type':'authorization_code'
     }
 
-    context.$http.post('https://my.tanda.co/api/oauth/token', data, header).then((res) => {
-      callback(res.body);
+    context.$http.post('https://my.tanda.co/api/oauth/token', data, h).then((res) => {
+      callback({'action': 'success', 'data': res.body});
     }).catch((res) => {
       callback({
         'action': 'fail',
-        'msg': res.body.msg
+        'msg': 'Unable to oauth',
+        'data': res
       });
     })
   },
@@ -38,14 +41,16 @@ export default {
       'time': Date.now(),
     }
 
+    console.log(data, header());
     context.$http.post('https://my.tanda.co/api/v2/clockins', data, header()).then((res) => {
       console.log(res);
-      callback(res.body);
+      callback({'action': 'success', 'data': res.body});
     }).catch((res) => {
       callback({
         'action': 'fail',
-        'msg': res.body.msg
-      });
+        'msg': 'Unable to clock in',
+        'data': res
+      });    
     });
   },
 
@@ -57,13 +62,26 @@ export default {
     }
 
     context.$http.post('https://my.tanda.co/api/v2/clockins', data, header()).then((res) => {
-      callback(res.body);
+      callback({'action': 'success', 'data': res.body});
     }).catch((res) => {
       callback({
         'action': 'fail',
-        'msg': res.body.msg
+        'msg': 'Unable to clock out',
+        'data': res
       });
     });
   },
+
+  getme(context, callback) {
+    context.$http.get('https://my.tanda.co/api/v2/users/me', header()).then((res) => {
+      callback({'action': 'success', 'data': res.body});
+    }).catch((res) => {
+      callback({
+        'action': 'fail',
+        'msg': 'Unable to get me',
+        'data': res
+      });
+    });
+  }
 
 }

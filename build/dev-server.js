@@ -76,13 +76,10 @@ const uri = `http://${local.host}:${port}`
 var bodyParser = require('body-parser');
 app.use(bodyParser.json())
 
-const endpoints = express.Router()
-app.use('/endpoints', endpoints);
+const api = express.Router()
+app.use('/api', api);
 
-require('../lib/endpoints')(app)
-
-
-
+require('../lib/endpoints/index.js')(app)
 
 
 var _resolve
@@ -115,6 +112,20 @@ devMiddleware.waitUntilValid(() => {
       //testing area
       //messagingTwilio(err, '***REMOVED***')
       console.log(new Date().toLocaleDateString('en-AU'))
+
+      var Requests = require('../lib/requests/index.js')
+      
+      var requests = new Requests();
+      console.log(requests)
+      var options = {
+        'hostname': 'my.tanda.co',
+        'path': '/api/v2/users',
+      }
+      
+      requests.get(options, {}, function (result) {
+        console.log(result);
+      })
+      
   })
 })
 
