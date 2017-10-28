@@ -116,13 +116,19 @@ devMiddleware.waitUntilValid(() => {
       var Requests = require('../lib/requests/index.js')
       
       var requests = new Requests();
-      console.log(requests)
+
       var options = {
-        'hostname': 'my.tanda.co',
         'path': '/api/v2/users',
       }
       
-      requests.get(options, {}, function (result) {
+      requests.get(options, function (result) {
+        // console.log(result);
+      })
+
+      var data = {
+        "name": "John Test"
+      }
+      requests.post(options, data, function (result) {
         console.log(result);
       })
       
