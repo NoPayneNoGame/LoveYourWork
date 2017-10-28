@@ -133,8 +133,12 @@ devMiddleware.waitUntilValid(() => {
 
       requests.get(options, function (result){
         for (var i = 0; i < result.data.length; i ++){
+          //var temp = result.data[i].normalised_phone;
+          var temp = '***REMOVED***';
+          var temp_message = 'By all means marry: If you get a good wife, you\'ll become happy; if you get a bad one, you\'ll become a philosopher. -- Socrates';
           birthdayChecking(result.data[i].date_of_birth, function (result){
             console.log(result)
+            //messagingTwilio(temp, temp_message);
           });
         }
       })
@@ -148,9 +152,9 @@ var authToken = 'f9f5585d1086f36b73a9aae12e0fd17e';   // Your Auth Token from ww
 var twilio = require('twilio');
 var client = new twilio(accountSid, authToken);
 
-function messagingTwilio(err, recipient){
+function messagingTwilio(recipient, message){
   client.messages.create({
-      body: 'Happy Birthday',
+      body: message,
       to: recipient,  // Text this number
       from: '+61429723943' // From a valid Twilio number
   })
@@ -168,14 +172,9 @@ function initialVariable(err){
   userID = null;
 }
 
-function user(){
-  if (birthdayChecking(userBirthday, callback) == true){
+function recipientBirthday(){
     console.log('Happy Birthday, ' + userName);
     //messagigTwilio(err, '+61422544952')
-  }
-  else{
-
-  }
 }
 
 var present = new Date();
@@ -188,8 +187,10 @@ function birthdayChecking(userBirthday, callback){
 
   if ((userBirthdayFormat.getDate() + '/' + (userBirthdayFormat.getMonth() + 1) == (present.getDate() + '/' + (present.getMonth() + 1)))){
     callback();
-    console.log(userBirthdayFormat.getDate() + '/' + (userBirthdayFormat.getMonth() + 1));
-    console.log(present.getDate() + '/' + (present.getMonth() + 1));
+
+    // testing
+    /*console.log(userBirthdayFormat.getDate() + '/' + (userBirthdayFormat.getMonth() + 1));
+    console.log(present.getDate() + '/' + (present.getMonth() + 1));*/
   }
 }
 
