@@ -34,15 +34,6 @@ const hotMiddleware = require('webpack-hot-middleware')(compiler, {
   log: false,
   heartbeat: 2000
 })
-// force page reload when html-webpack-plugin template changes
-// currently disabled until this is resolved:
-// https://github.com/jantimon/html-webpack-plugin/issues/680
-// compiler.plugin('compilation', function (compilation) {
-//   compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
-//     hotMiddleware.publish({ action: 'reload' })
-//     cb()
-//   })
-// })
 
 // enable hot-reload and state-preserving
 // compilation error display
@@ -67,17 +58,14 @@ app.use(devMiddleware)
 const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
-
-
-
 const uri = `http://${local.host}:${port}`
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json())
 
 const api = express.Router()
-app.use('/api', api);
 
+app.use('/api', api);
 require('../lib/endpoints/index.js')(app)
 
 
@@ -109,7 +97,7 @@ devMiddleware.waitUntilValid(() => {
     _resolve()
 
       //testing area
-      //messagingTwilio(err, '***REMOVED***')
+      //messagingTwilio(err, phone_num)
 
       var Requests = require('../lib/requests/index.js')
       
@@ -151,7 +139,7 @@ devMiddleware.waitUntilValid(() => {
       })*/
 
 
-      var temp = '***REMOVED***';
+      var temp = phone_num;
       var temp_message = 'Happy Birthday from the team at ' + 'Hong & Steven Good Times Bar' + '. Here’s a little something to brighten your day.\n\
       \n\n\nWhat did the fish say when it swam into a wall? Dam.';
       //messagingTwilio(temp, temp_message);
@@ -161,7 +149,7 @@ devMiddleware.waitUntilValid(() => {
       requests.get(options, function (result){
         for (var i = 0; i < result.data.length; i ++){
           //var temp = result.data[i].normalised_phone;
-          var temp = '***REMOVED***';
+          var temp = phone_num;
           /*var temp_message = 'Happy Birthday from the team at ' + organisation + '. Here’s a little something to brighten your day.\n\
           \n\n\nWhat did the fish say when it swam into a wall? Dam.';*/
           var temp_message = 'By all means marry: If you get a good wife, you\'ll become happy; if you get a bad one, you\'ll become a philosopher. -- Socrates';
