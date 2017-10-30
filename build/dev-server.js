@@ -14,7 +14,6 @@ const webpack = require('webpack')
 const proxyMiddleware = require('http-proxy-middleware')
 const webpackConfig = require('./webpack.dev.conf')
 
-
 // default port where dev server listens for incoming traffic
 const port = process.env.PORT || config.dev.port
 // automatically open browser, if not set will be false
@@ -121,23 +120,38 @@ devMiddleware.waitUntilValid(() => {
       }
       
       requests.get(options, function (result) {
-        // console.log(result);
-      })
-
-      var data = {
-        "name": "John Test"
-      }
-      /*requests.post(options, data, function (result) {
-        console.log(result);
-      })*/
-
-      requests.get(options, function (result){
         for (var i = 0; i < result.data.length; i ++){
-          birthdayChecking(result.data[i].date_of_birth, function (result){
-            console.log(result)
+          var user = result.data[i];
+          birthdayChecking(user.date_of_birth, function (result){
+            if(result) {
+              console.log(`It's ${user.name}'s birthday! (${user.id})` )
+            }
           });
         }
-      })
+      });
+
+
+      options = { 'path': '/api/v2/clockins'}
+      var data = {
+        'user_id': '450482',
+        'type': 'clockin',
+        'time': Date.now()/1000,
+      }
+
+      // requests.post(options, data, function (result){
+
+      //   console.log(result)
+      //   var data = {
+      //     'user_id': '450482',
+      //     'type': 'clockout',
+      //     'time': Date.now()/1000,
+      //   }
+        
+      //   requests.post(options, data, function (result) {
+      //     console.log(result);
+      //   })
+
+      // })
   })
 })
 
@@ -184,13 +198,12 @@ var present = new Date();
 function birthdayChecking(userBirthday, callback){
   var userBirthdayFormat = new Date(userBirthday);
 
-  userBirthdayFormat.getDate();
-
-  if ((userBirthdayFormat.getDate() + '/' + (userBirthdayFormat.getMonth() + 1) == (present.getDate() + '/' + (present.getMonth() + 1)))){
-    callback();
-    console.log(userBirthdayFormat.getDate() + '/' + (userBirthdayFormat.getMonth() + 1));
-    console.log(present.getDate() + '/' + (present.getMonth() + 1));
-  }
+  callback((userBirthdayFormat.getDate() + '/' + (userBirthdayFormat.getMonth() + 1) == (present.getDate() + '/' + (present.getMonth() + 1))))
+  //{
+    // callback();
+    // console.log(userBirthdayFormat.getDate() + '/' + (userBirthdayFormat.getMonth() + 1));
+    // console.log(present.getDate() + '/' + (present.getMonth() + 1));
+  // }
 }
 
 function workAnniversary (userWorkDate, callback){
@@ -203,10 +216,4 @@ function workAnniversary (userWorkDate, callback){
   }
 }
 
-
-module.exports = {
-  ready: readyPromise,
-  close: () => {
-    server.close()
-  }
-}
+module.exports = app;

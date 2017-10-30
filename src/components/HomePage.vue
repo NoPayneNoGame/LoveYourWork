@@ -44,19 +44,9 @@ export default {
     },
 
     getMe(){
-      const context = this;
-
-      requests.getme(this, function(result) {
-          console.log(result)        
-        if(result.action === 'success') {
-          console.log(result)
-        } else {
-          context.$message({
-            'type': 'error',
-            'message': result.msg
-          })
-        }
-      });
+      this.$http.post('http://192.168.201.64:8080/api/webhooks', {'hello':'world'}).then((res) => {
+        console.log(res);      
+      })
     }
   }
 }
